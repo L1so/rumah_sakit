@@ -78,11 +78,12 @@ public class Admin extends User {
         }
 
         // Membuat objek invoice baru dan menambahkannya ke koleksi
-        Invoice newInvoice = new Invoice(newInvoiceId, amount, new Date());
+        Invoice newInvoice = new Invoice(newInvoiceId, amount, new Date(), patientId); // Menyertakan ID pasien
         invoices.add(newInvoice); // Menambahkan invoice ke daftar invoice
 
         System.out.println("Berhasil membuat invoice untuk " + selectedPatient.getName() + " (ID invoice = " + newInvoiceId + ") !");
     }
+
 
     // Metode untuk mencari invoice berdasarkan ID
     private Invoice getInvoiceById(int id, ArrayList<Invoice> invoices) {
@@ -98,7 +99,7 @@ public class Admin extends User {
         System.out.println("Daftar Invoice:");
         for (Invoice invoice : invoices) {
             String status = invoice.isPaid() ? "LUNAS" : "BELUM LUNAS";
-            System.out.println(invoice.getInvoiceId() + ". Rp" + invoice.getAmount() + " - Ditagihkan kepada " + invoice.getDate() + " - Status: " + status);
+            System.out.println(invoice.getInvoiceId() + ". Rp" + invoice.getAmount() + " - Ditagihkan pada " + invoice.getDate() + " - Status: " + status);
         }
     }
 
@@ -173,15 +174,13 @@ public class Admin extends User {
         System.out.println("5. Dr. Rina (Umum) - Setiap Hari: 08:00 - 16:00");
     }
 
-    public void inputDataPasien(LoginSystem loginSystem, ArrayList<Patient> patients) {
+    public void inputDataPasien(ArrayList<Patient> patients) {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Masukkan nama pasien: ");
         String patientName = scanner.nextLine();
         System.out.print("Masukkan tanggal lahir pasien (yyyy-MM-dd): ");
         String dobString = scanner.nextLine();
         Date dateOfBirth = java.sql.Date.valueOf(dobString); // Mengonversi string ke Date
-        System.out.print("Masukkan nomor rekam medis: ");
-        String medicalRecordNumber = scanner.nextLine();
 
         // Mencari ID pasien baru yang belum digunakan
         int newPatientId = 1; // Mulai dari 1
@@ -190,14 +189,13 @@ public class Admin extends User {
         }
 
         // Membuat objek pasien baru dan menambahkannya ke koleksi
-        Patient newPatient = new Patient(newPatientId, "123", patientName, dateOfBirth, medicalRecordNumber);
+        Patient newPatient = new Patient(newPatientId, "123", patientName, dateOfBirth); // Hapus rekam medis dari sini
         patients.add(newPatient); // Menambahkan pasien ke daftar pasien
-
-        // Menambahkan pasien ke sistem login
-        loginSystem.addUser(newPatient); // Tambahkan pasien ke sistem login
 
         System.out.println("Pasien bernama " + patientName + " dengan ID " + newPatientId + " telah terbuat !");
     }
+
+
 
     // Metode untuk mencari pasien berdasarkan ID
     private Patient getPatientById(int id, ArrayList<Patient> patients) {
@@ -219,10 +217,6 @@ public class Admin extends User {
                 System.out.println("ID: " + patient.getUserId() + ", Nama: " + patient.getName());
             }
         }
-    }
-
-    public void mengelolaInvoice() {
-        System.out.println("Fitur mengelola invoice belum diimplementasikan.");
     }
 
     public void cekStatusPembayaran() {

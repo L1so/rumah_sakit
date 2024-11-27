@@ -9,9 +9,9 @@ public class Main {
         LoginSystem loginSystem = new LoginSystem();
 
         // Inisialisasi pengguna
-        Admin admin = new Admin(1, "123", "Raina", "raina@mail.com");
         ArrayList<Patient> patients = new ArrayList<>(); // Koleksi untuk menyimpan pasien
         ArrayList<Invoice> invoices = new ArrayList<>(); // Koleksi untuk menyimpan invoice
+        Admin admin = new Admin(1, "123", "Raina", "raina@mail.com");
         Doctor doctor = new Doctor(2, "123", "Dr. Arli", "Kardiologi", "082-314-214", patients);
         Apoteker apoteker = new Apoteker(3, "123", "Apoteker Ahmad", "021-4124-1212");
 
@@ -21,9 +21,9 @@ public class Main {
         loginSystem.addUser(apoteker);
 
         // Menambahkan pasien existing untuk pengujian
-        Patient existingPatient = new Patient(1, "123", "Ipul", java.sql.Date.valueOf("1995-10-11"), "1");
-        patients.add(existingPatient); // Menambahkan pasien ke daftar pasien
-        loginSystem.addUser(existingPatient); // Menambahkan pasien ke sistem login
+        Patient pasienTersimpan = new Patient(1, "123", "Akbar", java.sql.Date.valueOf("1995-10-11"));
+        patients.add(pasienTersimpan); // Menambahkan pasien ke daftar pasien
+        loginSystem.addUser(pasienTersimpan); // Menambahkan pasien ke sistem login
 
         // Daftar obat yang sudah terdefinisi (50 nama obat umum)
         ArrayList<Obat> obatList = new ArrayList<>();
@@ -66,16 +66,16 @@ public class Main {
 
             switch (choice) {
                 case 1:
-                    handleAdminActions(admin, scanner, loginSystem, patients, invoices); // Pastikan untuk menambahkan invoices
+                    handleAdminActions(admin, scanner, loginSystem, patients, invoices);
                     break;
                 case 2:
                     handleDoctorActions(doctor, scanner, patients, obatList, resepList);
                     break;
                 case 3:
-                    handlePatientLogin(scanner, patients, invoices); // Mengubah untuk login pasien dengan menambahkan invoices
+                    handlePatientLogin(scanner, patients, invoices);
                     break;
                 case 4:
-                    handleApotekerActions(apoteker, scanner, resepList, obatList); // Kosongkan resep list
+                    handleApotekerActions(apoteker, scanner, resepList, obatList);
                     break;
                 default:
                     System.out.println("Pilihan tidak valid.");
@@ -104,7 +104,7 @@ public class Main {
         }
 
         if (patient != null) {
-            handlePatientActions(patient, scanner, invoices); // Akses dashboard pasien dengan menambahkan invoices
+            handlePatientActions(patient, scanner, invoices);
         } else {
             System.out.println("Login gagal. ID atau password salah.");
         }
@@ -120,45 +120,41 @@ public class Main {
             System.out.println("2. Mengelola Data Pasien");
             System.out.println("3. Mengelola Invoice");
             System.out.println("4. Tampilkan Kamar");
-            System.out.println("5. Cek Status Pembayaran"); // Opsi ini memerlukan argumen
-            System.out.println("6. Tampilkan Ruang Dokter");
-            System.out.println("7. Tampilkan Jadwal Praktek Dokter");
-            System.out.println("8. Masukkan Pasien ke Kamar");
-            System.out.println("9. Buat Invoice");
-            System.out.println("10. Logout");
+            System.out.println("5. Tampilkan Ruang Dokter");
+            System.out.println("6. Tampilkan Jadwal Praktek Dokter");
+            System.out.println("7. Masukkan Pasien ke Kamar");
+            System.out.println("8. Buat Invoice");
+            System.out.println("9. Logout");
 
             System.out.print("Masukkan pilihan Anda: ");
             int choice = scanner.nextInt();
 
             switch (choice) {
                 case 1:
-                    admin.inputDataPasien(loginSystem, patients); // Pass patients
+                    admin.inputDataPasien(patients);
                     break;
                 case 2:
-                    admin.mengelolaDataPasien(patients); // Pass patients to the method
+                    admin.mengelolaDataPasien(patients);
                     break;
                 case 3:
-                    admin.mengelolaInvoice();
+                    admin.cekStatusPembayaran(invoices);
                     break;
                 case 4:
                     admin.tampilkanKamar();
                     break;
                 case 5:
-                    admin.cekStatusPembayaran(invoices); // Cek status pembayaran dengan argumen invoices
-                    break;
-                case 6:
                     admin.tampilkanRuangDokter(); // Menampilkan ruang dokter
                     break;
-                case 7:
+                case 6:
                     admin.tampilkanJadwalPraktek(); // Menampilkan jadwal praktek dokter
                     break;
-                case 8:
+                case 7:
                     admin.masukkanPasienKeKamar(patients); // Memanggil metode untuk mendaftarkan pasien ke kamar
                     break;
-                case 9:
+                case 8:
                     admin.buatInvoice(patients, invoices); // Memanggil metode untuk membuat invoice
                     break;
-                case 10:
+                case 9:
                     continueLoop = false;
                     System.out.println("Keluar...");
                     break;
@@ -167,12 +163,6 @@ public class Main {
             }
         }
     }
-
-
-
-
-
-
 
     private static void handleDoctorActions(Doctor doctor, Scanner scanner, ArrayList<Patient> patients, ArrayList<Obat> obatList, ArrayList<Resep> resepList) {
         System.out.println("Selamat datang, Dokter!");

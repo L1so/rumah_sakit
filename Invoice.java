@@ -1,6 +1,5 @@
 package PSI;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 public class Invoice {
@@ -8,12 +7,14 @@ public class Invoice {
     private double amount;
     private Date date;
     private boolean isPaid; // Menyimpan status pembayaran
+    private int patientId; // Menyimpan ID pasien yang terkait
 
-    public Invoice(int invoiceId, double amount, Date date) {
+    public Invoice(int invoiceId, double amount, Date date, int patientId) {
         this.invoiceId = invoiceId;
         this.amount = amount;
         this.date = date;
         this.isPaid = false; // Default status belum dibayar
+        this.patientId = patientId; // Menyimpan ID pasien
     }
 
     public void printInvoice() {
@@ -28,7 +29,6 @@ public class Invoice {
         return isPaid; // Mengembalikan status pembayaran
     }
 
-
     public int getInvoiceId() {
         return invoiceId;
     }
@@ -39,5 +39,9 @@ public class Invoice {
 
     public Date getDate() {
         return date;
+    }
+
+    public int getPatientId() {
+        return patientId; // Menyediakan akses ke ID pasien
     }
 }

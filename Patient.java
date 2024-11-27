@@ -8,19 +8,17 @@ import java.text.SimpleDateFormat;
 public class Patient extends User {
     private String name;
     private Date dateOfBirth;
-    private String medicalRecordNumber;
     private ArrayList<String> medicalHistory = new ArrayList<>();
     private ArrayList<String> complaints = new ArrayList<>(); // Menyimpan keluhan pasien
 
-    public Patient(int userId, String password, String name, Date dateOfBirth, String medicalRecordNumber) {
+    public Patient(int userId, String password, String name, Date dateOfBirth) {
         super(userId, password);
         this.name = name;
         this.dateOfBirth = dateOfBirth;
-        this.medicalRecordNumber = medicalRecordNumber;
         // Contoh riwayat medis
-        medicalHistory.add("2024-01-15: Check-up, all clear.");
-        medicalHistory.add("2024-06-20: Flu diagnosis, prescribed medication.");
+        medicalHistory.add("2024-01-15: Diagnosis - Flu Burung");
     }
+
 
     @Override
     public void showRole() {
@@ -56,8 +54,8 @@ public class Patient extends User {
         ArrayList<Invoice> outstandingInvoices = new ArrayList<>(); // Daftar tagihan yang belum dibayar
 
         for (Invoice invoice : invoices) {
-            // Menampilkan hanya tagihan yang belum dibayar
-            if (!invoice.isPaid()) {
+            // Menampilkan hanya tagihan yang belum dibayar dan terkait dengan pasien ini
+            if (!invoice.isPaid() && invoice.getPatientId() == this.getUserId()) {
                 outstandingInvoices.add(invoice);
                 System.out.println(outstandingInvoices.size() + ". " + new SimpleDateFormat("yyyy-MM-dd").format(invoice.getDate()) + " - Rp" + invoice.getAmount());
             }
@@ -88,6 +86,7 @@ public class Patient extends User {
             System.out.println("Pembayaran dibatalkan.");
         }
     }
+
 
 
 
