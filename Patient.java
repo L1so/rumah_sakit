@@ -53,37 +53,43 @@ public class Patient extends User {
 
     public void cekTagihan(ArrayList<Invoice> invoices) {
         System.out.println("Daftar Tagihan untuk " + name + ":");
-        int count = 1;
+        ArrayList<Invoice> outstandingInvoices = new ArrayList<>(); // Daftar tagihan yang belum dibayar
+
         for (Invoice invoice : invoices) {
-            System.out.println(count + ". " + invoice.getDate() + " - " + invoice.getAmount());
-            count++;
+            // Menampilkan hanya tagihan yang belum dibayar
+            if (!invoice.isPaid()) {
+                outstandingInvoices.add(invoice);
+                System.out.println(outstandingInvoices.size() + ". " + new SimpleDateFormat("yyyy-MM-dd").format(invoice.getDate()) + " - Rp" + invoice.getAmount());
+            }
         }
 
-        if (count == 1) {
-            System.out.println("Tidak ada tagihan yang tersedia.");
+        if (outstandingInvoices.isEmpty()) {
+            System.out.println("Tidak ada tagihan outstanding !");
             return;
         }
 
         System.out.print("Pilih nomor urut tagihan yang ingin dibayarkan: ");
         int invoiceChoice = new Scanner(System.in).nextInt();
 
-        if (invoiceChoice < 1 || invoiceChoice >= count) {
+        if (invoiceChoice < 1 || invoiceChoice > outstandingInvoices.size()) {
             System.out.println("Pilihan tagihan tidak valid.");
             return;
         }
 
-        Invoice selectedInvoice = invoices.get(invoiceChoice - 1); // Mengambil invoice berdasarkan pilihan
+        Invoice selectedInvoice = outstandingInvoices.get(invoiceChoice - 1); // Mengambil invoice berdasarkan pilihan
 
         System.out.print("Bayar tagihan ini (ya/tidak): ");
         String payChoice = new Scanner(System.in).nextLine();
 
         if (payChoice.equalsIgnoreCase("ya")) {
-            selectedInvoice.payInvoice(); // Membayar tagihan
+            selectedInvoice.payInvoice(); // Menandai tagihan sebagai dibayar
             System.out.println("Tagihan berhasil dibayar!");
         } else {
             System.out.println("Pembayaran dibatalkan.");
         }
     }
+
+
 
 
     public void addToMedicalHistory(String diagnosis) {

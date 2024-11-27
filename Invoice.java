@@ -28,6 +28,7 @@ public class Invoice {
         return isPaid; // Mengembalikan status pembayaran
     }
 
+
     public int getInvoiceId() {
         return invoiceId;
     }

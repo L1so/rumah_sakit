@@ -97,9 +97,11 @@ public class Admin extends User {
     public void cekStatusPembayaran(ArrayList<Invoice> invoices) {
         System.out.println("Daftar Invoice:");
         for (Invoice invoice : invoices) {
-            System.out.println(invoice.getInvoiceId() + ". " + invoice.getAmount() + " - Ditagihkan kepada " + invoice.getDate() + " - Status: " + (invoice.isPaid() ? "LUNAS" : "BELUM LUNAS"));
+            String status = invoice.isPaid() ? "LUNAS" : "BELUM LUNAS";
+            System.out.println(invoice.getInvoiceId() + ". Rp" + invoice.getAmount() + " - Ditagihkan kepada " + invoice.getDate() + " - Status: " + status);
         }
     }
+
 
 
 
